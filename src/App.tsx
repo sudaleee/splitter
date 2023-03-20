@@ -1,24 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Extractor from "./extract/Extractor";
+import Table from "./table/Table";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="leftSide">
+        <b style={{ fontSize: 20 }}>Paragraph</b>
+        <Table />
+      </div>
+      <div className="rightSide">
+        <Extractor />
+      </div>
     </div>
   );
 }
