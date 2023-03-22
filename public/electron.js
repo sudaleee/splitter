@@ -1,3 +1,5 @@
+import { runScript } from "./src/utils.js";
+
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
@@ -49,30 +51,27 @@ app.on("activate", () => {
   }
 });
 
+//event
 const OPEN_KEYNOTE = `open_keynote.scpt`;
 const CREATE_SLIDE = `create_slide.scpt`;
 const DELETE_FIRST_SLIDE = `delete_first_slide.scpt`;
 
 const ipcMain = require("electron").ipcMain;
 
-const runAppleScript = (fileName, param1, param2) => {
+ipcMain.handle("appleScript", async (_, args) => {
   const { execSync } = require("child_process");
 
-  const dataPath = isDev
-    ? path.join(__dirname, "/script/" + fileName)
-    : path.join(process.resourcesPath, fileName);
+  runScript(execSync, getScriptPath(OPEN_KEYNOTE));
 
-  // const scriptPath = path.join(__dirname, "/script/" + fileName);
-  // const scriptPath = path.join(process.resourcesPath, fileName);
+  runScript(execSync, getScriptPath(CREATE_SLIDE), "test", "heelo22");
 
-  console.log(dataPath);
-  execSync(`osascript ${dataPath} ${param1} ${param2}`);
-};
+  runScript(execSync, getScriptPath(DELETE_FIRST_SLIDE));
 
-ipcMain.handle("appleScript", async (_, args) => {
-  runAppleScript(OPEN_KEYNOTE);
-  runAppleScript(CREATE_SLIDE, "test", "hello1");
-  runAppleScript(CREATE_SLIDE, "test", "hello2");
-  runAppleScript(DELETE_FIRST_SLIDE, "test", "hello2");
   return "result";
 });
+
+const getScriptPath = (fileName) => {
+  return isDev
+    ? path.join(__dirname, "/script/" + fileName)
+    : path.join(process.resourcesPath, fileName);
+};
