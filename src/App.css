@@ -15,3 +15,19 @@
 .rightSide {
   width: 400px;
 }
+
+.flexEnd {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.withMax {
+  width: 100vh;
+}
+
+.mBtn {
+  width: 70px;
+  height: 30px;
+  background-color: #32a1ce;
+  margin: 5px;
+}
