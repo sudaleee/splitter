@@ -1,19 +1,33 @@
 .App {
-  display: flex;
-  padding: 20px 30px 20px;
-  justify-content: flex-end;
-  height: 93vh;
+  height: 100vh;
 }
 
-.leftSide {
-  width: 100%;
-  height: 100%;
-  border-right: thick solid #32a1ce;
+.header {
+  height: 150px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.header-top {
+  height: 80px;
+  padding-top: 30px;
+  padding-bottom: 5px;
+}
+
+.header-bottom {
+  padding-top: 15px;
+}
+
+.btn {
   margin-right: 10px;
 }
 
-.rightSide {
-  width: 400px;
+.body {
+  background-color: #f0f0f0;
+  height: 100vh;
+  padding-top: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .flexEnd {
@@ -21,13 +35,20 @@
   justify-content: flex-end;
 }
 
-.withMax {
-  width: 100vh;
+.mb-20 {
+  margin-bottom: 15px;
 }
 
-.mBtn {
-  width: 70px;
-  height: 30px;
-  background-color: #32a1ce;
-  margin: 5px;
+th {
+  padding-left: 20px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+td {
+  padding-left: 20px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }

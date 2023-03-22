@@ -1,17 +1,17 @@
+import TableRow from "./TableRow";
+
 const Table = () => {
   return (
-    <table className="table table-bordered">
+    <table className="table table-borderless" style={{ background: `#FFFFFF` }}>
       <thead>
-        <th>number</th>
-        <th className="container-fluid">paragraph</th>
-        <th className="w-100"></th>
+        <tr>
+          <th style={{ width: `100px` }}>number</th>
+          <th className="w-auto">paragraph</th>
+          <th style={{ width: `100px` }}></th>
+        </tr>
       </thead>
       <tbody>
-        <td>1</td>
-        <td>"heelo world"</td>
-        <td>
-          <button> 삭제 </button>
-        </td>
+        <TableRow />
       </tbody>
     </table>
   );

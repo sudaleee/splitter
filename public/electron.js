@@ -1,5 +1,3 @@
-import { runScript } from "./src/utils.js";
-
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
@@ -61,17 +59,30 @@ const ipcMain = require("electron").ipcMain;
 ipcMain.handle("appleScript", async (_, args) => {
   const { execSync } = require("child_process");
 
-  runScript(execSync, getScriptPath(OPEN_KEYNOTE));
+  if (!runScript(execSync, getScriptPath(OPEN_KEYNOTE))) {
+    return false;
+  }
 
   runScript(execSync, getScriptPath(CREATE_SLIDE), "test", "heelo22");
 
   runScript(execSync, getScriptPath(DELETE_FIRST_SLIDE));
 
-  return "result";
+  return true;
 });
 
 const getScriptPath = (fileName) => {
   return isDev
     ? path.join(__dirname, "/script/" + fileName)
     : path.join(process.resourcesPath, fileName);
+};
+
+const runScript = (execSync, script, param1, param2) => {
+  try {
+    execSync(`osascript ${script} ${param1} ${param2}`);
+    return true;
+  } catch (err) {
+    console.log("output", err);
+    console.log("sdterr", err.stderr.toString());
+    return false;
+  }
 };
