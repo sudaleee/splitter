@@ -1,14 +1,8 @@
 import { nanoid } from "nanoid";
-import { useState } from "react";
 import TableRow from "./TableRow";
 
-const Table = () => {
-  const [contents, setContents] = useState([
-    {
-      no: null,
-      paragraph: null,
-    },
-  ]);
+const Table = ({ isExporting, keys, setKeys }) => {
+  const btnClassName = [`btn btn-primary`, isExporting ? "disabled" : ""];
 
   return (
     <>
@@ -24,15 +18,15 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          {contents.map((content, idx) => (
+          {keys.map((key, idx) => (
             <TableRow
               idx={idx}
-              key={nanoid()}
+              rowKey={key}
+              key={key}
+              isExporting={isExporting}
               deleteRow={(index) => {
-                setContents([
-                  ...contents.slice(0, index),
-                  ...contents.slice(index + 1),
-                ]);
+                //TODO : 수정
+                setKeys([...keys.slice(0, index), ...keys.slice(index + 1)]);
               }}
             />
           ))}
@@ -43,14 +37,14 @@ const Table = () => {
         style={{ background: `#ffffff` }}
       >
         <button
-          className="btn btn-primary"
+          className={btnClassName.join(" ")}
           style={{
             width: `40px`,
             height: `40px`,
             borderRadius: `50%`,
           }}
           onClick={() => {
-            setContents([...contents, {}]);
+            setKeys([...keys, nanoid()]);
           }}
         >
           <span className="align-self-start pv-0" style={{ fontSize: 20 }}>

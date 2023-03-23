@@ -56,18 +56,28 @@ const DELETE_FIRST_SLIDE = `delete_first_slide.scpt`;
 
 const ipcMain = require("electron").ipcMain;
 
-ipcMain.handle("appleScript", async (_, args) => {
+ipcMain.handle("openKeynote", (_, args) => {
+  const { execSync } = require("child_process");
+  return runScript(execSync, getScriptPath(OPEN_KEYNOTE));
+});
+
+ipcMain.handle("createSlide", (_, title, no, paragraph) => {
   const { execSync } = require("child_process");
 
-  if (!runScript(execSync, getScriptPath(OPEN_KEYNOTE))) {
-    return false;
-  }
+  const slideTitle = `${title} ${no}번`;
 
-  runScript(execSync, getScriptPath(CREATE_SLIDE), "test", "heelo22");
+  //TODO: 문장 쪼개기
+  return runScript(
+    execSync,
+    getScriptPath(CREATE_SLIDE),
+    slideTitle,
+    paragraph
+  );
+});
 
-  runScript(execSync, getScriptPath(DELETE_FIRST_SLIDE));
-
-  return true;
+ipcMain.handle("deleteFirstSlide", (_, args) => {
+  const { execSync } = require("child_process");
+  return runScript(execSync, getScriptPath(DELETE_FIRST_SLIDE));
 });
 
 const getScriptPath = (fileName) => {
@@ -76,13 +86,39 @@ const getScriptPath = (fileName) => {
     : path.join(process.resourcesPath, fileName);
 };
 
-const runScript = (execSync, script, param1, param2) => {
+const runScript = async (execSync, script, param1, param2) => {
   try {
     execSync(`osascript ${script} ${param1} ${param2}`);
     return true;
   } catch (err) {
-    console.log("output", err);
+    console.log("fail!!!!!!!!!!!!!!!!!!!!!!!!", err);
     console.log("sdterr", err.stderr.toString());
     return false;
   }
 };
+
+const Store = require("electron-store");
+
+const schema = {
+  no: {
+    type: "string",
+    default: "0",
+  },
+  paragraph: {
+    type: "string",
+  },
+};
+
+const store = new Store({ schema });
+
+ipcMain.handle("getStoreValue", (event, key) => {
+  return store.get(key);
+});
+
+ipcMain.handle("saveStoreValue", (event, rowKey, data) => {
+  store.set(rowKey, data);
+});
+
+ipcMain.handle("deleteStoreValue", (event, rowKey) => {
+  store.delete(rowKey);
+});

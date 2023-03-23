@@ -1,10 +1,6 @@
-const Header = () => {
-  const clickExportBtn = async () => {
-    const ipcRenderer = window.require("electron").ipcRenderer;
-    const result = await ipcRenderer.invoke("appleScript");
+const Header = ({ isExporting, start }) => {
+  const btnClassName = [`btn btn-primary`, isExporting ? "disabled" : ""];
 
-    console.log(result);
-  };
   return (
     <div className="header">
       <div className="border-bottom header-top">
@@ -13,10 +9,11 @@ const Header = () => {
       <div className="header-bottom">
         <input
           placeholder="slide title"
-          className="align-middle"
+          className={`align-middle`}
           style={{ height: `35px`, marginRight: `10px` }}
+          disabled={isExporting}
         />
-        <button className="btn btn-primary" onClick={clickExportBtn}>
+        <button className={btnClassName.join(" ")} onClick={start}>
           export keynote
         </button>
       </div>

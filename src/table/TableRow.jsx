@@ -1,8 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const TableRow = ({ idx, deleteRow }) => {
+const TableRow = ({ idx, deleteRow, rowKey, isExporting }) => {
   const [no, setNo] = useState("");
   const [paragraph, setParagraph] = useState("");
+
+  useEffect(() => {
+    const ipcRenderer = window.require("electron").ipcRenderer;
+    ipcRenderer.invoke("saveStoreValue", rowKey, { no, paragraph });
+  }, [no, paragraph, rowKey]);
+
+  const btnClassName = [`btn btn-danger btn-sm`, isExporting ? "disabled" : ""];
 
   return (
     <tr className="border-bottom">
@@ -11,6 +18,7 @@ const TableRow = ({ idx, deleteRow }) => {
           style={{ width: `80px` }}
           value={no}
           onChange={(e) => setNo(e.target.value)}
+          disabled={isExporting}
         />
       </td>
       <td>
@@ -18,11 +26,12 @@ const TableRow = ({ idx, deleteRow }) => {
           className="w-100"
           onChange={(e) => setParagraph(e.target.value)}
           value={paragraph}
+          disabled={isExporting}
         />
       </td>
       <td className="d-flex justify-content-center">
         <button
-          className="btn btn-danger btn-sm"
+          className={btnClassName.join(" ")}
           style={{
             background: `#dc3545`,
             margin: `0px 5px 0px`,
