@@ -105,7 +105,11 @@ ipcMain.handle("createSlide", (_, title, no, paragraph) => {
 
 ipcMain.handle("deleteFirstSlide", (_, args) => {
   const { execSync } = require("child_process");
-  return runScript(execSync, getScriptPath(DELETE_FIRST_SLIDE));
+  return runScript(
+    execSync,
+    getScriptPath(DELETE_FIRST_SLIDE),
+    `\"${!args ? "reuslt" : args}\"`
+  );
 });
 
 const getScriptPath = (fileName) => {

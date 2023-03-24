@@ -27,13 +27,17 @@
   "main": "public/electron.js",
   "homepage": "./",
   "build": {
-    "productName": "cutter",
+    "productName": "Paragraph Cutter",
     "appId": "cutter",
     "asar": true,
     "mac": {
-      "target": [
-        "default"
-      ]
+      "target": {
+        "target": "dmg",
+        "arch": [
+          "x64",
+          "arm64"
+        ]
+      }
     },
     "extraResources": [
       {
