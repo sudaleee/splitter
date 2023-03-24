@@ -72,6 +72,21 @@ const split = (str) => {
   return result === null ? [str.toString()] : result;
 };
 
+const splitTextBySentence = (text) => {
+  if (/^\d+$/.test(text)) {
+    return [text];
+  }
+
+  const regex = /(".*?"|\(.*?\)|[^.?!]+[.?!]?)/g;
+  const sentences = text.match(regex);
+
+  return sentences
+    .map((sentence) => sentence.trim())
+    .filter((s) => s !== null)
+    .filter((s) => s.length !== 0)
+    .map((s) => s.replace(/\n/g, " "));
+};
+
 ipcMain.handle("createSlide", (_, title, no, paragraph) => {
   if (!paragraph || paragraph.length === 0) {
     return true;
@@ -81,7 +96,7 @@ ipcMain.handle("createSlide", (_, title, no, paragraph) => {
 
   const slideTitle = `\"${title} ${no}번\"`;
 
-  const sentences = split(removeSpecialChar(paragraph));
+  const sentences = splitTextBySentence(paragraph);
 
   if (sentences === null || sentences.length === 0) {
     return true;
