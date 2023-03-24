@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const TableRow = ({ idx, deleteRow, rowKey, isExporting }) => {
+const TableRow = ({ deleteRow, rowKey, isExporting }) => {
   const [no, setNo] = useState("");
   const [paragraph, setParagraph] = useState("");
 
@@ -36,7 +36,7 @@ const TableRow = ({ idx, deleteRow, rowKey, isExporting }) => {
             background: `#dc3545`,
             margin: `0px 5px 0px`,
           }}
-          onClick={() => deleteRow(idx)}
+          onClick={() => deleteRow(rowKey)}
         >
           delete
         </button>

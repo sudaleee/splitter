@@ -1,4 +1,8 @@
-const Header = ({ isExporting, start }) => {
+import { forwardRef, useState } from "react";
+
+const Header = ({ isExporting, start }, ref) => {
+  const [title, setTitle] = useState("");
+
   const btnClassName = [`btn btn-primary`, isExporting ? "disabled" : ""];
 
   return (
@@ -12,6 +16,9 @@ const Header = ({ isExporting, start }) => {
           className={`align-middle`}
           style={{ height: `35px`, marginRight: `10px` }}
           disabled={isExporting}
+          onChange={(e) => setTitle(e.target.value)}
+          ref={ref}
+          value={title}
         />
         <button className={btnClassName.join(" ")} onClick={start}>
           export keynote
@@ -21,4 +28,4 @@ const Header = ({ isExporting, start }) => {
   );
 };
 
-export default Header;
+export default forwardRef(Header);

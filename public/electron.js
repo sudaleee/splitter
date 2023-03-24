@@ -64,7 +64,7 @@ ipcMain.handle("openKeynote", (_, args) => {
 ipcMain.handle("createSlide", (_, title, no, paragraph) => {
   const { execSync } = require("child_process");
 
-  const slideTitle = `${title} ${no}번`;
+  const slideTitle = `\"${title} ${no}번\"`;
 
   //TODO: 문장 쪼개기
   return runScript(
