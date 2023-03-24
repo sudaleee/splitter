@@ -12,6 +12,7 @@ function createWindow() {
     minWidth: 1280,
     maxHeight: 1080,
     maxWidth: 1920,
+    icon: path.join(__dirname, `public/icon.png`),
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,

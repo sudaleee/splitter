@@ -37,7 +37,8 @@
           "x64",
           "arm64"
         ]
-      }
+      },
+      "icon": "./public/icon.png"
     },
     "extraResources": [
       {
@@ -45,7 +46,8 @@
       }
     ],
     "dmg": {
-      "title": "tournant"
+      "title": "Paragraph Cutter",
+      "icon": "./public/icon.png"
     },
     "win": {
       "target": [
