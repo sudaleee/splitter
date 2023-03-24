@@ -11,7 +11,7 @@ const Table = ({ isExporting, keys, deleteKey, addKey }) => {
       >
         <thead className="border-bottom">
           <tr>
-            <th style={{ width: `100px` }}>No.</th>
+            <th style={{ width: `100px` }}>no.</th>
             <th className="w-auto">paragraph</th>
             <th style={{ width: `100px` }}></th>
           </tr>

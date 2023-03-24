@@ -15,12 +15,14 @@ const App = () => {
 
   const slideTitleRef = useRef();
   const initStatus = () => {
+    console.log(`init`);
     setStatus({ isExporting: false, isKeynoteOpend: false });
   };
 
   const createSlide = (ipcRenderer) => {
     //data 가져옴 => slide 생성 => key 삭제
     const firstKey = keys.at(0);
+    console.log(keys);
 
     ipcRenderer
       .invoke("getStoreValue", firstKey)
@@ -53,10 +55,6 @@ const App = () => {
     });
   };
 
-  const finish = (ipcRenderer) => {
-    ipcRenderer.invoke("deleteFirstSlide").then(initStatus);
-  };
-
   const deleteKey = (ipcRenderer) => (rowKey) => {
     ipcRenderer
       .invoke("deleteStoreValue", rowKey)
@@ -68,18 +66,23 @@ const App = () => {
       return;
     }
 
+    console.log("exporting");
+
     const ipcRenderer = window.require("electron").ipcRenderer;
 
     if (!status.isKeynoteOpend) {
+      console.log("open keynote");
       openKeynote(ipcRenderer);
       return;
     }
 
     if (keys.length === 0) {
-      finish(ipcRenderer);
+      console.log("finished");
+      ipcRenderer.invoke("deleteFirstSlide").then(initStatus);
       return;
     }
 
+    console.log("create slide");
     createSlide(ipcRenderer);
   }, [status, keys]);
 

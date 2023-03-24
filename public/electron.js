@@ -61,18 +61,46 @@ ipcMain.handle("openKeynote", (_, args) => {
   return runScript(execSync, getScriptPath(OPEN_KEYNOTE));
 });
 
+const removeSpecialChar = (str) => {
+  return str.toString().replace(/[^\w\s.!?()]/g, "");
+};
+
+const split = (str) => {
+  const result = str.toString().match(/[^.!?]+[.!?]+/g);
+  console.log(`spliited `, result);
+  return result === null ? [str.toString()] : result;
+};
+
 ipcMain.handle("createSlide", (_, title, no, paragraph) => {
+  if (!paragraph || paragraph.length === 0) {
+    return true;
+  }
+
   const { execSync } = require("child_process");
 
   const slideTitle = `\"${title} ${no}번\"`;
 
-  //TODO: 문장 쪼개기
-  return runScript(
-    execSync,
-    getScriptPath(CREATE_SLIDE),
-    slideTitle,
-    paragraph
+  const sentences = split(removeSpecialChar(paragraph));
+
+  if (sentences === null || sentences.length === 0) {
+    return true;
+  }
+
+  let result = true;
+
+  sentences.forEach(
+    (sentence) =>
+      (result =
+        result &&
+        runScript(
+          execSync,
+          getScriptPath(CREATE_SLIDE),
+          slideTitle,
+          `\"${sentence}\"`
+        ))
   );
+
+  return result;
 });
 
 ipcMain.handle("deleteFirstSlide", (_, args) => {
@@ -86,7 +114,7 @@ const getScriptPath = (fileName) => {
     : path.join(process.resourcesPath, fileName);
 };
 
-const runScript = async (execSync, script, param1, param2) => {
+const runScript = (execSync, script, param1, param2) => {
   try {
     execSync(`osascript ${script} ${param1} ${param2}`);
     return true;
