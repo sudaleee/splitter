@@ -61,26 +61,7 @@ ipcMain.handle("openKeynote", (_, args) => {
   return runScript(execSync, getScriptPath(OPEN_KEYNOTE));
 });
 
-const split = (str) => {
-  const result = str.toString().match(/[^.!?]+[.!?]+/g);
-  console.log(`spliited `, result);
-  return result === null ? [str.toString()] : result;
-};
-
-const splitTextBySentence = (text) => {
-  if (/^\d+$/.test(text)) {
-    return [text];
-  }
-
-  const regex = /(".*?"|\(.*?\)|[^.?!]+[.?!]?)/g;
-  const sentences = text.match(regex);
-
-  return sentences
-    .map((sentence) => sentence.trim())
-    .filter((s) => s !== null)
-    .filter((s) => s.length !== 0)
-    .map((s) => s.replace(/\n/g, " "));
-};
+const { splitBySentence } = require("./splitter.js");
 
 ipcMain.handle("createSlide", (_, title, no, paragraph) => {
   if (!paragraph || paragraph.length === 0) {
@@ -91,7 +72,7 @@ ipcMain.handle("createSlide", (_, title, no, paragraph) => {
 
   const slideTitle = `${title} ${no}번`;
 
-  const sentences = splitTextBySentence(paragraph);
+  const sentences = splitBySentence(paragraph);
 
   if (sentences === null || sentences.length === 0) {
     return true;
