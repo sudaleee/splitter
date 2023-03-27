@@ -27,7 +27,7 @@
   "main": "public/electron.js",
   "homepage": "./",
   "build": {
-    "productName": "cutter",
+    "productName": "Paragraph Cutter",
     "appId": "cutter",
     "asar": true,
     "mac": {
