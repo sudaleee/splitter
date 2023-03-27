@@ -61,10 +61,6 @@ ipcMain.handle("openKeynote", (_, args) => {
   return runScript(execSync, getScriptPath(OPEN_KEYNOTE));
 });
 
-const removeSpecialChar = (str) => {
-  return str.toString().replace(/[^\w\s.!?()]/g, "");
-};
-
 const split = (str) => {
   const result = str.toString().match(/[^.!?]+[.!?]+/g);
   console.log(`spliited `, result);
@@ -93,7 +89,7 @@ ipcMain.handle("createSlide", (_, title, no, paragraph) => {
 
   const { execSync } = require("child_process");
 
-  const slideTitle = `\"${title} ${no}번\"`;
+  const slideTitle = `${title} ${no}번`;
 
   const sentences = splitTextBySentence(paragraph);
 
@@ -107,12 +103,7 @@ ipcMain.handle("createSlide", (_, title, no, paragraph) => {
     (sentence) =>
       (result =
         result &&
-        runScript(
-          execSync,
-          getScriptPath(CREATE_SLIDE),
-          slideTitle,
-          `\"${sentence}\"`
-        ))
+        runScript(execSync, getScriptPath(CREATE_SLIDE), slideTitle, sentence))
   );
 
   return result;
@@ -131,7 +122,7 @@ const getScriptPath = (fileName) => {
 
 const runScript = (execSync, script, param1, param2) => {
   try {
-    execSync(`osascript ${script} ${param1} ${param2}`);
+    execSync(`osascript \"${script}\" \"${param1}\" \"${param2}\"`);
     return true;
   } catch (err) {
     console.log("fail!!!!!!!!!!!!!!!!!!!!!!!!", err);
