@@ -37,7 +37,8 @@
           "x64",
           "arm64"
         ]
-      }
+      },
+      "icon": "./public/icon.png"
     },
     "extraResources": [
       {

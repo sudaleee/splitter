@@ -78,7 +78,9 @@ const App = () => {
 
     if (keys.length === 0) {
       console.log("finished");
-      ipcRenderer.invoke("deleteFirstSlide").then(initStatus);
+      ipcRenderer
+        .invoke("deleteFirstSlide", slideTitleRef.current.value)
+        .then(initStatus);
       return;
     }
 
